@@ -1,4 +1,4 @@
-## Elm/WebSocket Chat Server ##
+## Elm/WebSocket Chat Client ##
 
 This is a very straight forward chat client that is meant to be
 used with the companion project [typeScriptChatServer](https://github.com/nprice1/typeScriptChatServer).
