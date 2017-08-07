@@ -117,4 +117,4 @@ view model =
 
 viewMessage : Message -> Html msg
 viewMessage msg =
-  div [] [ text (msg.username ++ ":" ++ msg.message) ]
+  div [] [ text (msg.username ++ ": " ++ msg.message) ]
