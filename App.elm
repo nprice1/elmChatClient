@@ -9,6 +9,7 @@ import Debug exposing (..)
 webSocketAddress : String
 webSocketAddress = "ws://localhost:3000"
 
+main : Program Never Model Msg
 main =
   Html.program
     { 
@@ -22,7 +23,7 @@ main =
 -- MODEL
 
 type alias Message = {
-  username : String,
+  name : String,
   message : String
 }
 
@@ -60,10 +61,6 @@ update msg {currentUserName, currentMessage, users, messages} =
 
     ReceiveMessage userMessage -> (Model currentUserName currentMessage users (jsonToMessage userMessage :: messages), Cmd.none)
 
-createUserMessage : String -> String -> Message
-createUserMessage message currentUserName =
-  (Message currentUserName message)
-
 createUserMessageJson : String -> String -> String
 createUserMessageJson message currentUserName =
   messageToJson (Message currentUserName message)
@@ -73,7 +70,7 @@ messageDecoder = map2 Message (field "name" Json.Decode.string) (field "message"
 
 messageEncoder : Message -> Json.Encode.Value
 messageEncoder message =
-    Json.Encode.object [ ("name", Json.Encode.string message.username), ("message", Json.Encode.string message.message) ]
+    Json.Encode.object [ ("name", Json.Encode.string message.name), ("message", Json.Encode.string message.message) ]
 
 jsonToMessage : String -> Message 
 jsonToMessage messageJson =
@@ -81,7 +78,7 @@ jsonToMessage messageJson =
     Ok message -> message
 
     Err err -> 
-      Debug.log "Failed to decode message"
+      Debug.log ("Failed to decode message" ++ err)
       (Message "" "")
 
 messageToJson : Message -> String
@@ -117,4 +114,4 @@ view model =
 
 viewMessage : Message -> Html msg
 viewMessage msg =
-  div [] [ text (msg.username ++ ": " ++ msg.message) ]
+  div [] [ text (msg.name ++ ": " ++ msg.message) ]
